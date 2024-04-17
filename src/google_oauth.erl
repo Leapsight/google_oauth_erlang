@@ -8,11 +8,17 @@
 
 get_access_token(ServiceAccountFile, Scope) when is_list(Scope) ->
     get_access_token(ServiceAccountFile, erlang:list_to_binary(Scope));
-get_access_token(ServiceAccountFile, Scope) ->
+get_access_token({file, ServiceAccountFile}, Scope) ->
     {ok, Bin} = file:read_file(ServiceAccountFile),
-    ServiceJson = jsx:decode(Bin, ?JSX_OPTS),
+    get_access_token({bin, Bin}, Scope);
+get_access_token({bin, ServiceAccountBin}, Scope) ->
+    ServiceJson = jsx:decode(ServiceAccountBin, ?JSX_OPTS),
+    get_access_token({map, ServiceJson}, Scope);
+get_access_token({map, ServiceJson}, Scope) ->
     JWTToken = make_jwt(ServiceJson, Scope),
-    validate_token(ServiceJson, JWTToken).
+    validate_token(ServiceJson, JWTToken);
+get_access_token(ServiceAccountFile, Scope) ->
+    get_access_token({file, ServiceAccountFile}, Scope).
 
 validate_token(ServiceJson, JWTToken) ->
     Body = iolist_to_binary([<<"assertion=">>, JWTToken, ?GRANT_TYPE]),
