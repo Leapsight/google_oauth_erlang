@@ -1,0 +1,15 @@
+{application, google_oauth,
+ [{description, "An OTP application"},
+  {vsn, "2.0.0"},
+  {registered, []},
+  {mod, {google_oauth_app, []}},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
