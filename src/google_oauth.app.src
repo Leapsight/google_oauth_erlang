@@ -3,10 +3,7 @@
   {vsn, "2.0.0"},
   {registered, []},
   {mod, {google_oauth_app, []}},
-  {applications,
-   [kernel,
-    stdlib
-   ]},
+  {applications,[kernel,stdlib,sasl,google_oauth]},
   {env,[]},
   {modules, []},
 
